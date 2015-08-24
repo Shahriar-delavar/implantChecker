@@ -23,7 +23,7 @@ class dbHelper:
     TemperatureOffset = 36.53
 
     def __init__(self):
-        self.db = mdb.connect("localhost", "fft", "password", "fft")
+        self.db = mdb.connect("127.0.0.1", "fft", "password", "fft")
 
     def convertData(self, ListData):
         ShortData = struct.unpack(">hhhhhhh", buffer(bytearray(ListData)))
