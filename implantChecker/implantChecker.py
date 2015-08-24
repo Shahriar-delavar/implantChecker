@@ -30,7 +30,7 @@ time.sleep(0.01)
 
 DataID = mdb.getSerialID(SerialName)
 checkUser = mdb.getUserID(Email)
-checkSerial = mdb.getSerialID(DataID)
+checkSerial = mdb.getSerialID(SerialName)
 if not checkUser:
     print "Email not Registered"
     quit()
