@@ -9,7 +9,6 @@ import accelerometer
 from scipy.fftpack import fft
 from scipy.signal import hanning
 from scipy.signal import hamming
-from time import *
 
 TargetSampleNumber = 1024
 TargetRate = 125
@@ -68,7 +67,7 @@ while True:
     FO.close()
 
     print "Calculate FFT"
-    hannWindow = hanning(TargetSampleNumber)
+    hanWindow = hanning(TargetSampleNumber)
     hammWindow = hamming(TargetSampleNumber)
     fourier = fft(fftdata)
     print "Save FFTData.txt file"
