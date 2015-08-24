@@ -28,7 +28,6 @@ accel.setSampleRate(TargetRate)
 accel.enableFifo(False)
 time.sleep(0.01)
 
-DataID = mdb.getSerialID(SerialName)
 checkUser = mdb.getUserID(Email)
 checkSerial = mdb.getSerialID(SerialName)
 if not checkUser:
@@ -37,6 +36,7 @@ if not checkUser:
 if not checkSerial:
     mdb.addSerial(SerialName, Email)
 
+DataID = mdb.getSerialID(SerialName)
 print "Capture {0} samples at {1} samples/sec".format(TargetSampleNumber, accel.SampleRate)
 screen.lcd_display_string("Capture {0} samples".format(TargetSampleNumber), 1)
 screen.lcd_display_string("at {0} samples/sec".format(accel.SampleRate), 2)
@@ -75,7 +75,7 @@ if Total > 0:
 
     print "Inserting raw into Database"
     screen.lcd_display_string("Insert into Database.", 1)
-    mdb.insertData(Values, TargetSampleNumber, DataID)
+    mdb.insertData(Values, TargetSampleNumber, str(DataID))
     fftdata = []
     for loop in range(TargetSampleNumber):
         SimpleSample = Values[loop * 14: loop * 14 + 14]
@@ -92,7 +92,7 @@ if Total > 0:
 
     print "Inserting FFT Result to Database"
     screen.lcd_display_string("Recording FFT Results", 3)
-    mdb.insertFFT(fftData, TargetSampleNumber, TargetRate, DataID)
+    mdb.insertFFT(fftData, TargetSampleNumber, TargetRate, str(DataID))
     frequency = []
     Peak = 0
     PeakIndex = 0
