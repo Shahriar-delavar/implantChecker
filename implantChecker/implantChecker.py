@@ -6,15 +6,19 @@ import math
 import time
 import numpy
 import accelerometer
+import dbhelper
 from scipy.fftpack import fft
 from scipy.signal import hanning
 from scipy.signal import hamming
 
 TargetSampleNumber = 1024
 TargetRate = 125
+Email = "raditiya@me.com"
+DataID = 1
 
 screen = lcd.lcd()
 accel = accelerometer.mpu6050()
+mdb = dbhelper.dbHelper()
 
 screen.lcd_clear()
 accel.setup()
@@ -56,19 +60,14 @@ if Total > 0:
         print "Overrun Error! Quitting.\n"
         quit()
 
-    print "Saving RawData.txt  file."
-    FO = open("RawData.txt", "w")
-    FO.write("GT\tGx\tGy\tGz\tTemperature\tGyrox\tGyroy\tGyroz\n")
+    print "Inserting into Database"
+    mdb.insertData(Values, TargetSampleNumber, Email, DataID)
     fftdata = []
     for loop in range(TargetSampleNumber):
         SimpleSample = Values[loop * 14: loop * 14 + 14]
         I = accel.convertData(SimpleSample)
         CurrentForce = math.sqrt((I.Gx * I.Gx) + (I.Gy * I.Gy) + (I.Gz * I.Gz))
         fftdata.append(CurrentForce)
-        FO.write("{0:6.3f}\t{1:6.3f}\t{2:6.3f}\t{3:6.3f}\t".format(CurrentForce, I.Gx, I.Gy, I.Gz))
-        FO.write("{0:5.1f}\t{1:6.3f}\t{2:6.3f}\t{3:6.3f}\n".format(I.Temperature, I.Gyrox, I.Gyroy, I.Gyroz))
-    FO.close()
-
     print "Calculate FFT"
     hanWindow = hanning(TargetSampleNumber)
     hammWindow = hamming(TargetSampleNumber)
