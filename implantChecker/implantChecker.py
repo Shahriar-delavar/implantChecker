@@ -46,19 +46,22 @@ while True:
         Values.extend(accel.readDataFromFifo())
 
     Total = len(Values) / 14
+
     if Total >= TargetSampleNumber:
         break
+
     if Total > 0:
         Status = accel.readStatus()
         if (Status & 0x10) == 0x10:
             print "Overrun Error! Quitting.\n"
             quit()
+
     print "Saving RawData.txt  file."
     FO = open("RawData.txt", "w")
     FO.write("GT\tGx\tGy\tGz\tTemperature\tGyrox\tGyroy\tGyroz\n")
     fftdata = []
     for loop in range(TargetSampleNumber):
-        SimpleSample = Values[loop * 14: loop * 14 + 14]
+        SimpleSample = Values[loop*14 : loop*14+14]
         I = accel.convertData(SimpleSample)
         CurrentForce = math.sqrt((I.Gx * I.Gx) + (I.Gy * I.Gy) + (I.Gz * I.Gz))
         fftdata.append(CurrentForce)
