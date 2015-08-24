@@ -27,10 +27,12 @@ accel.setSampleRate(TargetRate)
 accel.enableFifo(False)
 time.sleep(0.01)
 
-if not mdb.getUserID(Email):
+checkUser = mdb.getUserID(Email)
+checkSerial = mdb.getSerialID(DataID)
+if not checkUser:
     print "Email not Registered"
     quit()
-if not mdb.getSerialID(DataID):
+if not checkSerial:
     mdb.addSerial(DataID, Email)
 
 print "Capture {0} samples at {1} samples/sec".format(TargetSampleNumber, accel.SampleRate)
