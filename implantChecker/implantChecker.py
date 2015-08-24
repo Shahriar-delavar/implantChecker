@@ -97,5 +97,5 @@ if Total > 0:
     screen.lcd_display_string("-------Peak at-------",1)
     screen.lcd_display_string("{0}Hz".format(frequency[PeakIndex]), 2)
     screen.lcd_display_string("          =          ",3)
-    screen.lcd_display_string(Peak,4)
+    screen.lcd_display_string(str(Peak), 4)
 print "Done!"
