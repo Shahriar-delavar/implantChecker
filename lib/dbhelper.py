@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import MySQLdb as mdb
 import struct
+import math
 
 
 class accelData:
