@@ -12,7 +12,7 @@ from scipy.signal import hanning
 from scipy.signal import hamming
 
 TargetSampleNumber = 1024
-TargetRate = 125
+TargetRate = float(125)
 Email = "raditiya@me.com"
 DataID = "RADIT0001"
 
@@ -59,6 +59,7 @@ if Total > 0:
     if (Status & 0x10) == 0x10:
         print "Overrun Error! Quitting.\n"
         quit()
+
     print "Inserting raw into Database"
     mdb.insertData(Values, TargetSampleNumber, Email, DataID)
     fftdata = []
@@ -67,11 +68,13 @@ if Total > 0:
         I = accel.convertData(SimpleSample)
         CurrentForce = math.sqrt((I.Gx * I.Gx) + (I.Gy * I.Gy) + (I.Gz * I.Gz))
         fftdata.append(CurrentForce)
+
     print "Calculate FFT"
     hanWindow = hanning(TargetSampleNumber)
     hammWindow = hamming(TargetSampleNumber)
     fourier = fft(fftdata)
     fftData = numpy.abs(fourier[0: len(fourier) / 2 + 1]) / TargetSampleNumber
+
     print "Inserting FFT Result to Database"
     mdb.insertFFT(fftData, TargetSampleNumber, TargetRate, Email, DataID)
     frequency = []
