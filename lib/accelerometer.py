@@ -1,7 +1,6 @@
 #!/usr/bin/python
 import smbus
 import struct
-import math
 
 bus = smbus.SMBus(1)
 

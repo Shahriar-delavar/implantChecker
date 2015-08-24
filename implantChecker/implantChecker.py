@@ -14,7 +14,7 @@ from scipy.signal import hamming
 TargetSampleNumber = 1024
 TargetRate = 125
 Email = "raditiya@me.com"
-DataID = 1
+DataID = "RADIT0001"
 
 screen = lcd.lcd()
 accel = accelerometer.mpu6050()
@@ -59,8 +59,7 @@ if Total > 0:
     if (Status & 0x10) == 0x10:
         print "Overrun Error! Quitting.\n"
         quit()
-
-    print "Inserting into Database"
+    print "Inserting raw into Database"
     mdb.insertData(Values, TargetSampleNumber, Email, DataID)
     fftdata = []
     for loop in range(TargetSampleNumber):
@@ -72,20 +71,17 @@ if Total > 0:
     hanWindow = hanning(TargetSampleNumber)
     hammWindow = hamming(TargetSampleNumber)
     fourier = fft(fftdata)
-    print "Save FFTData.txt file"
-    FO = open("FFTData.txt", "w")
     fftData = numpy.abs(fourier[0: len(fourier) / 2 + 1]) / TargetSampleNumber
+    print "Inserting FFT Result to Database"
+    mdb.insertFFT(fftData, TargetSampleNumber, TargetRate, Email, DataID)
     frequency = []
-    FO.write("Frequency\tFFT\n")
     Peak = 0
     PeakIndex = 0
     for loop in range(TargetSampleNumber / 2 + 1):
         frequency.append(loop * TargetRate / TargetSampleNumber)
-        FO.write("{0}\t{1}\n".format(frequency[loop], fftData[loop]))
         if loop > 0:
             if fftData[loop] > Peak:
                 Peak = fftData[loop]
                 PeakIndex = loop
-
     print "Peak at {0}Hz = {1}".format(frequency[PeakIndex], Peak)
 print "Done!"

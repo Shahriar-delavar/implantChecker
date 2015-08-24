@@ -39,7 +39,6 @@ class dbHelper:
 
     def insertData(self, Data, SampleNumber, Email, DataID):
         userID = self.getUserID(Email)
-
         with self.db:
             cur = self.db.cursor()
             for loop in range(SampleNumber):
@@ -55,3 +54,13 @@ class dbHelper:
             row = cur.fetchone()
             emailID = row[0]
         return emailID
+
+    def insertFFT(self, Data, SampleNumber, TargetRate, Email, DataID):
+        userID = self.getUserID(Email)
+        frequency = []
+        with self.db:
+            cur = self.db.cursor()
+            for loop in range(SampleNumber / 2 + 1):
+                frequency.append(loop * TargetRate / SampleNumber)
+                cur.execute("INSERT INTO tb_fft values('', %s, %s, %s, %s)",
+                    (userID, frequency[loop], Data[loop], DataID))
