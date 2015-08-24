@@ -62,7 +62,10 @@ class dbHelper:
             cur = self.db.cursor()
             cur.execute("SELECT user_id FROM tb_users WHERE user_email= %s", (Email))
             row = cur.fetchone()
-            emailID = row[0]
+            if row:
+                emailID = row[0]
+            else:
+                emailID = ""
         return emailID
 
     def addSerial(self, Serial, Email):
@@ -77,5 +80,8 @@ class dbHelper:
             cur = self.db.cursor()
             cur.execute("SELECT serial_id FROM tb_serial WHERE serial_name= %s", (Serial))
             row = cur.fetchone()
-            serialID = row[0]
+            if row:
+                serialID = row[0]
+            else:
+                serialID = ""
         return serialID
