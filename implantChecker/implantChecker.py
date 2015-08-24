@@ -20,7 +20,6 @@ SerialName = "RADIT0001"
 screen = lcd.lcd()
 accel = accelerometer.mpu6050()
 mdb = dbhelper.dbHelper()
-DataID = getSerialID(SerialName)
 
 screen.lcd_clear()
 accel.setup()
@@ -29,6 +28,7 @@ accel.setSampleRate(TargetRate)
 accel.enableFifo(False)
 time.sleep(0.01)
 
+DataID = mdb.getSerialID(SerialName)
 checkUser = mdb.getUserID(Email)
 checkSerial = mdb.getSerialID(DataID)
 if not checkUser:
