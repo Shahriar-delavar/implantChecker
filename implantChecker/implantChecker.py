@@ -10,8 +10,8 @@ from scipy.fftpack import fft
 from scipy.signal import hanning
 from scipy.signal import hamming
 
-TargetSampleNumber = int(1024)
-TargetRate = float(125)
+TargetSampleNumber = 1024
+TargetRate = 125
 
 screen = lcd.lcd()
 accel = accelerometer.mpu6050()
@@ -53,7 +53,7 @@ while True:
         if (Status & 0x10) == 0x10:
             print "Overrun Error! Quitting.\n"
             quit()
-        print "Saving RawData.txt  file."
+    print "Saving RawData.txt  file."
     FO = open("RawData.txt", "w")
     FO.write("GT\tGx\tGy\tGz\tTemperature\tGyrox\tGyroy\tGyroz\n")
     fftdata = []
