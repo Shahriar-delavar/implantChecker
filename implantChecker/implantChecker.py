@@ -27,11 +27,12 @@ accel.setSampleRate(TargetRate)
 accel.enableFifo(False)
 time.sleep(0.01)
 
-print "Capturing {0} samples at {1} samples/sec".format(TargetSampleNumber, accel.SampleRate)
+print "Capture {0} samples at {1} samples/sec".format(TargetSampleNumber, accel.SampleRate)
 screen.lcd_display_string("Capturing {0} samples".format(TargetSampleNumber), 1)
-screen.lcd_display_string("@ {0} samples/sec".format(accel.SampleRate), 2)
-
+screen.lcd_display_string("at {0} samples/sec".format(accel.SampleRate), 2)
+screen.lcd_display_string("Press enter to start", 3)
 raw_input("Press enter to start")
+screen.lcd_clear()
 
 accel.resetFifo()
 accel.enableFifo(True)
@@ -63,6 +64,7 @@ if Total > 0:
         quit()
 
     print "Inserting raw into Database"
+    screen.lcd_display_string("Insert into Database.", 1)
     mdb.insertData(Values, TargetSampleNumber, Email, DataID)
     fftdata = []
     for loop in range(TargetSampleNumber):
@@ -72,12 +74,14 @@ if Total > 0:
         fftdata.append(CurrentForce)
 
     print "Calculate FFT"
+    screen.lcd_display_string("  Calculating FFT  ",2)
     hanWindow = hanning(TargetSampleNumber)
     hammWindow = hamming(TargetSampleNumber)
     fourier = fft(fftdata)
     fftData = numpy.abs(fourier[0: len(fourier) / 2 + 1]) / TargetSampleNumber
 
     print "Inserting FFT Result to Database"
+    screen.lcd_display_string("Recording FFT Results", 3)
     mdb.insertFFT(fftData, TargetSampleNumber, TargetRate, Email, DataID)
     frequency = []
     Peak = 0
@@ -89,4 +93,9 @@ if Total > 0:
                 Peak = fftData[loop]
                 PeakIndex = loop
     print "Peak at {0}Hz = {1}".format(frequency[PeakIndex], Peak)
+    screen.lcd_clear()
+    screen.lcd_display_string("-------Peak at-------",1)
+    screen.lcd_display_string("{0}Hz".format(Peak), 2)
+    screen.lcd_display_string("          =          ",3)
+    screen.lcd_display_string(Peak)
 print "Done!"
