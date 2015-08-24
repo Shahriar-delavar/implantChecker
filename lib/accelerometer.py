@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import smbus
 import struct
+import math
 
 bus = smbus.SMBus(1)
 
@@ -23,9 +24,8 @@ class mpu6050:
     GyroFactor = 500.0 / 32768.0
     TemperatureGain = 1.0 / 340.0
     TemperatureOffset = 36.53
-    MPU6050_ADDRESS = 0x68
 
-    #register address
+    MPU6050_ADDRESS = 0x68
     MPU6050_RA_XG_OFFS_TC = 0x00
     MPU6050_RA_YG_OFFS_TC = 0x01
     MPU6050_RA_ZG_OFFS_TC = 0x02
@@ -286,4 +286,4 @@ class mpu6050:
         bus.write_byte_data(self.MPU6050_ADDRESS, self.MPU6050_RA_FIFO_EN, 0)
         if flag:
             self.resetFifo()
-        bus.write_byte_data(self.MPU6050_ADDRESS, self.MPU6050_RA_FIFO_EN, 0b11111000)
+            bus.write_byte_data(self.MPU6050_ADDRESS, self.MPU6050_RA_FIFO_EN, 0b11111000)

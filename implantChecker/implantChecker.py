@@ -10,8 +10,8 @@ from scipy.fftpack import fft
 from scipy.signal import hanning
 from scipy.signal import hamming
 
-TargetSampleNumber = 1024
-TargetRate = 125
+TargetSampleNumber = int(1024)
+TargetRate = float(125)
 
 screen = lcd.lcd()
 accel = accelerometer.mpu6050()
