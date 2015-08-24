@@ -35,7 +35,7 @@ if not checkUser:
     print "Email not Registered"
     quit()
 if not checkSerial:
-    mdb.addSerial(DataID, Email)
+    mdb.addSerial(SerialName, Email)
 
 print "Capture {0} samples at {1} samples/sec".format(TargetSampleNumber, accel.SampleRate)
 screen.lcd_display_string("Capture {0} samples".format(TargetSampleNumber), 1)

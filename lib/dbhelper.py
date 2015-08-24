@@ -46,7 +46,7 @@ class dbHelper:
                 I = self.convertData(SimpleSample)
                 CurrentForce = math.sqrt((I.Gx * I.Gx) + (I.Gy * I.Gy) + (I.Gz * I.Gz))
                 cur.execute("INSERT INTO tb_data(data_gx, data_gy, data_gz, data_force, serial_id) VALUES(%s, %s, %s, %s, %s)",
-                    (I.Gx, I.Gy, I.Gz, CurrentForce, str(DataID)))
+                    (I.Gx, I.Gy, I.Gz, CurrentForce, DataID))
 
     def insertFFT(self, Data, SampleNumber, TargetRate, DataID):
         frequency = []
@@ -56,7 +56,7 @@ class dbHelper:
                 frequency.append(loop * TargetRate / SampleNumber)
                 if(frequency[loop] != 0):
                     cur.execute("INSERT INTO tb_fft(fft_frequency, fft_data, serial_id) VALUES(%s, %s, %s)",
-                    (frequency[loop], Data[loop], str(DataID)))
+                    (frequency[loop], Data[loop], DataID))
 
     def getUserID(self, Email):
         with self.db:
