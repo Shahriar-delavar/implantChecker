@@ -28,7 +28,7 @@ accel.enableFifo(False)
 time.sleep(0.01)
 
 print "Capture {0} samples at {1} samples/sec".format(TargetSampleNumber, accel.SampleRate)
-screen.lcd_display_string("Capturing {0} samples".format(TargetSampleNumber), 1)
+screen.lcd_display_string("Capture {0} samples".format(TargetSampleNumber), 1)
 screen.lcd_display_string("at {0} samples/sec".format(accel.SampleRate), 2)
 screen.lcd_display_string("Press enter to start", 3)
 raw_input("Press enter to start")
