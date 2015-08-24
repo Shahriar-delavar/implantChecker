@@ -14,7 +14,7 @@ from scipy.signal import hamming
 TargetSampleNumber = 1024
 TargetRate = float(125)
 Email = "raditiya@me.com"
-SerialName = "RADIT001"
+SerialName = "RADIT0001"
 
 
 screen = lcd.lcd()
