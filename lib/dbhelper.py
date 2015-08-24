@@ -37,31 +37,45 @@ class dbHelper:
         AccData.Gyroz = ShortData[6] * self.GyroFactor
         return AccData
 
-    def insertData(self, Data, SampleNumber, Email, DataID):
-        userID = self.getUserID(Email)
+    def insertData(self, Data, SampleNumber, DataID):
         with self.db:
             cur = self.db.cursor()
             for loop in range(SampleNumber):
                 SimpleSample = Data[loop * 14: loop * 14 + 14]
                 I = self.convertData(SimpleSample)
-                cur.execute("INSERT INTO tb_data(user_id, data_gx, data_gy, data_gz, data_seri) values(%s, %s, %s, %s, %s)",
-                    (userID, I.Gx, I.Gy, I.Gz, DataID))
+                CurrentForce = math.sqrt((I.Gx * I.Gx) + (I.Gy * I.Gy) + (I.Gz * I.Gz))
+                cur.execute("INSERT INTO tb_data(data_gx, data_gy, data_gz, data_force, serial_id) VALUES(%s, %s, %s, %s, %s)",
+                    (I.Gx, I.Gy, I.Gz, CurrentForce, DataID))
 
-    def getUserID(self, Email):
-        with self.db:
-            cur = self.db.cursor()
-            cur.execute("SELECT user_id FROM tb_users where user_email= %s", (Email))
-            row = cur.fetchone()
-            emailID = row[0]
-        return emailID
-
-    def insertFFT(self, Data, SampleNumber, TargetRate, Email, DataID):
-        userID = self.getUserID(Email)
+    def insertFFT(self, Data, SampleNumber, TargetRate, DataID):
         frequency = []
         with self.db:
             cur = self.db.cursor()
             for loop in range(SampleNumber / 2 + 1):
                 frequency.append(loop * TargetRate / SampleNumber)
                 if(frequency[loop] != 0):
-                    cur.execute("INSERT INTO tb_fft(user_id, fft_frequency, fft_data, fft_seri) values(%s, %s, %s, %s)",
-                    (userID, frequency[loop], Data[loop], DataID))
+                    cur.execute("INSERT INTO tb_fft(fft_frequency, fft_data, serial_id) VALUES(%s, %s, %s)",
+                    (frequency[loop], Data[loop], DataID))
+
+    def getUserID(self, Email):
+        with self.db:
+            cur = self.db.cursor()
+            cur.execute("SELECT user_id FROM tb_users WHERE user_email= %s", (Email))
+            row = cur.fetchone()
+            emailID = row[0]
+        return emailID
+
+    def addSerial(self, Serial, Email):
+        userID = self.getUserID(Email)
+        with self.db:
+            cur = self.db.cursor()
+            cur.execute("INSERT INTO tb_serial(user_id, serial_name) VALUES(%s, %s)",
+            (userID, Serial))
+
+    def getSerialID(self, Serial):
+        with self.db:
+            cur = self.db.cursor()
+            cur.execute("SELECT serial_id FROM tb_serial WHERE serial_name= %s", (Serial))
+            row = cur.fetchone()
+            serialID = row[0]
+        return serialID

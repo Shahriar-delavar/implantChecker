@@ -27,6 +27,12 @@ accel.setSampleRate(TargetRate)
 accel.enableFifo(False)
 time.sleep(0.01)
 
+if not mdb.getUserID(Email):
+    print "Email not Registered"
+    quit()
+if not mdb.getSerialID(DataID):
+    mdb.addSerial(DataID, Email)
+
 print "Capture {0} samples at {1} samples/sec".format(TargetSampleNumber, accel.SampleRate)
 screen.lcd_display_string("Capture {0} samples".format(TargetSampleNumber), 1)
 screen.lcd_display_string("at {0} samples/sec".format(accel.SampleRate), 2)
@@ -65,7 +71,7 @@ if Total > 0:
 
     print "Inserting raw into Database"
     screen.lcd_display_string("Insert into Database.", 1)
-    mdb.insertData(Values, TargetSampleNumber, Email, DataID)
+    mdb.insertData(Values, TargetSampleNumber, DataID)
     fftdata = []
     for loop in range(TargetSampleNumber):
         SimpleSample = Values[loop * 14: loop * 14 + 14]
@@ -82,7 +88,7 @@ if Total > 0:
 
     print "Inserting FFT Result to Database"
     screen.lcd_display_string("Recording FFT Results", 3)
-    mdb.insertFFT(fftData, TargetSampleNumber, TargetRate, Email, DataID)
+    mdb.insertFFT(fftData, TargetSampleNumber, TargetRate, DataID)
     frequency = []
     Peak = 0
     PeakIndex = 0
@@ -94,8 +100,8 @@ if Total > 0:
                 PeakIndex = loop
     print "Peak at {0}Hz = {1}".format(frequency[PeakIndex], Peak)
     screen.lcd_clear()
-    screen.lcd_display_string("------Peak at------",1)
-    screen.lcd_display_string("Freq: {0}Hz".format(frequency[PeakIndex]), 2)
+    screen.lcd_display_string("------Peak at-------",1)
+    screen.lcd_display_string(" Freq: {0}Hz".format(frequency[PeakIndex]), 2)
     screen.lcd_display_string("          =          ",3)
     screen.lcd_display_string("  {0}".format(Peak), 4)
 print "Done!"
