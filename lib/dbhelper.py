@@ -44,7 +44,7 @@ class dbHelper:
             for loop in range(SampleNumber):
                 SimpleSample = Data[loop * 14: loop * 14 + 14]
                 I = self.convertData(SimpleSample)
-                cur.execute("INSERT INTO tb_data values('', %s, %s, %s, %s, %s)",
+                cur.execute("INSERT INTO tb_data(user_id, data_gx, data_gy, data_gz, data_seri) values(%s, %s, %s, %s, %s)",
                     (userID, I.Gx, I.Gy, I.Gz, DataID))
 
     def getUserID(self, Email):
@@ -62,5 +62,5 @@ class dbHelper:
             cur = self.db.cursor()
             for loop in range(SampleNumber / 2 + 1):
                 frequency.append(loop * TargetRate / SampleNumber)
-                cur.execute("INSERT INTO tb_fft values('', %s, %s, %s, %s)",
+                cur.execute("INSERT INTO tb_fft(user_id, fft_frequency, fft_data, fft_seri) values(%s, %s, %s, %s)",
                     (userID, frequency[loop], Data[loop], DataID))
