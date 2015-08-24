@@ -14,11 +14,13 @@ from scipy.signal import hamming
 TargetSampleNumber = 1024
 TargetRate = float(125)
 Email = "raditiya@me.com"
-DataID = "RADIT0001"
+SerialName = "RADIT001"
+
 
 screen = lcd.lcd()
 accel = accelerometer.mpu6050()
 mdb = dbhelper.dbHelper()
+DataID = getSerialID(SerialName)
 
 screen.lcd_clear()
 accel.setup()
