@@ -62,5 +62,6 @@ class dbHelper:
             cur = self.db.cursor()
             for loop in range(SampleNumber / 2 + 1):
                 frequency.append(loop * TargetRate / SampleNumber)
-                cur.execute("INSERT INTO tb_fft(user_id, fft_frequency, fft_data, fft_seri) values(%s, %s, %s, %s)",
+                if(frequency[loop] != 0):
+                    cur.execute("INSERT INTO tb_fft(user_id, fft_frequency, fft_data, fft_seri) values(%s, %s, %s, %s)",
                     (userID, frequency[loop], Data[loop], DataID))
