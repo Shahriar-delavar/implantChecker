@@ -13,7 +13,7 @@ from scipy.signal import hamming
 
 TargetSampleNumber = 1024
 TargetRate = float(125)
-Email = "raditiya@me.com"
+Email = "raditiya@icloud.com"
 DataID = "RADIT0001"
 
 screen = lcd.lcd()
@@ -28,9 +28,9 @@ accel.enableFifo(False)
 time.sleep(0.01)
 
 checkUser = mdb.getUserID(Email)
-checkSerial = mdb.getSerialID(DataID)
+#checkSerial = mdb.getSerialID(DataID)
 print "User: {0}\n".format(checkUser)
-print "Serial: {0}\n".format(checkSerial)
+#print "Serial: {0}\n".format(checkSerial)
 
 print "Capture {0} samples at {1} samples/sec".format(TargetSampleNumber, accel.SampleRate)
 screen.lcd_display_string("Capture {0} samples".format(TargetSampleNumber), 1)
